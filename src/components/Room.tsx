@@ -36,9 +36,9 @@ export default function Room({
                 <Box>
                     <Grid gap={2} templateColumns={"5fr 1fr"}>
                         <Text as="b" noOfLines={1} fontSize="md">{name}</Text>
-                        <HStack _hover={{ color: "red.100" }} spacing={1}>
-                            <FaStar size={15} />
-                            <Text>{rating}</Text>
+                        <HStack spacing={1} alignItems="center">
+                            <FaStar size={12} />
+                            <Text fontSize={"sm"}>{rating}</Text>
                         </HStack>
                     </Grid>
 
