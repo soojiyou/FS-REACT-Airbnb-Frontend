@@ -24,7 +24,7 @@ export default function Header() {
         });
 
         await logOut();
-        queryClient.refetchQueries(["me"]);
+        queryClient.refetchQueries(["my-profile"]);
         toast.update(toastId, {
             status: "success",
             title: "Done!",
