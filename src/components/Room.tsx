@@ -44,7 +44,6 @@ export default function Room({
 
                     <Text fontSize="sm" color={gray}>{city}, {country}</Text>
                 </Box>
-
                 <Text fontSize="sm" color={gray}><Text as="b">$ {price}</Text>/ night</Text>
             </VStack>
         </Link>
