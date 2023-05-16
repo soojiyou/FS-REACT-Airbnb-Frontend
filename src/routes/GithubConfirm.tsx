@@ -24,11 +24,11 @@ export default function GithubConfirm() {
             QueryClient.refetchQueries(["my-profile"]);
             navigate("/");
         },
+
         onError: (error) => {
             console.log("mutation has an error");
         },
     })
-
 
 
     const confirmLogin = async () => {
@@ -40,7 +40,7 @@ export default function GithubConfirm() {
     }
     useEffect(() => {
         confirmLogin();
-    })
+    }, [])
     return (
         <VStack justifyContent={"center"} mt={40}>
             <Heading>Processing log in...</Heading>
