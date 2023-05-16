@@ -2,27 +2,37 @@ import { Heading, Spinner, Text, VStack, useToast } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { kakaoLogIn } from "../api";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function KakaoConfirm() {
     const { search } = useLocation();
     const toast = useToast()
     const QueryClient = useQueryClient();
     const navigate = useNavigate();
+    const mutation = useMutation(kakaoLogIn, {
+        onMutate: () => {
+            console.log("mutation starting");
+        },
+        onSuccess: (data) => {
+            toast({
+                title: "welcome back!",
+                description: "Happy to have you back!",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            });
+            QueryClient.refetchQueries(["my-profile"]);
+            navigate("/");
+        },
+        onError: (error) => {
+            console.log("mutation has an error");
+        },
+    })
     const confirmLogin = async () => {
         const params = new URLSearchParams(search);
         const code = params.get("code");
         if (code) {
-            const status = await kakaoLogIn(code);
-            if (status === 200) {
-                toast({
-                    status: "success",
-                    title: "Welcome!",
-                    description: "Happy to have you back!",
-                });
-                QueryClient.refetchQueries(["my-profile"]);
-                navigate("/");
-            }
+            mutation.mutate(code);
         }
     }
     useEffect(() => {
