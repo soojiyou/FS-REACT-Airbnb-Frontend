@@ -1,10 +1,11 @@
-import { Stack, Box, HStack, VStack, Button, IconButton, useDisclosure, useColorMode, LightMode, useColorModeValue, Avatar, MenuButton, Menu, MenuList, MenuItem, useToast } from '@chakra-ui/react';
+import { Stack, Box, HStack, VStack, Button, IconButton, useDisclosure, useColorMode, LightMode, useColorModeValue, Avatar, MenuButton, Menu, MenuList, MenuItem, useToast, ToastId } from '@chakra-ui/react';
 import { FaAirbnb, FaMoon, FaSun } from 'react-icons/fa';
 import LoginModal from './LoginModal';
 import SignUpModal from './SignUpModal';
 import useUser from "../lib/useUser";
 import { logOut } from '../api';
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRef } from 'react';
 
 export default function Header() {
     const { userLoading, isLoggedIn, user } = useUser();
@@ -15,21 +16,29 @@ export default function Header() {
     const ModeIcon = useColorModeValue(FaMoon, FaSun);
     const toast = useToast();
     const queryClient = useQueryClient();
+    const toastId = useRef<ToastId>();
+    const mutation = useMutation(logOut, {
+        onMutate: () => {
+            toastId.current = toast({
+                title: "Login out...",
+                description: "Sad to see you go...",
+                status: "loading",
+                position: "bottom-right",
+            });
+        },
+        onSuccess: () => {
+            if (toastId.current) {
+                queryClient.refetchQueries(["my-profile"]);
+                toast.update(toastId.current, {
+                    status: "success",
+                    title: "Done!",
+                    description: "See you later!",
+                });
+            }
+        }
+    });
     const onLogOut = async () => {
-        const toastId = toast({
-            title: "Login out...",
-            description: "Sad to see you go...",
-            status: "loading",
-            position: "bottom-right",
-        });
-
-        await logOut();
-        queryClient.refetchQueries(["my-profile"]);
-        toast.update(toastId, {
-            status: "success",
-            title: "Done!",
-            description: "See you later!",
-        });
+        mutation.mutate();
     };
 
     return (
