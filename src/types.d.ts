@@ -22,18 +22,19 @@ export interface IRoomOwner {
 }
 
 export interface IAmenity {
+    pk: number;
     name: string;
     description: string;
-    pk: number;
 }
 
 export interface ICategory {
+    pk: number;
     name: string;
     kind: string;
-    pk: number;
 }
 
 export interface IRoomDetail extends IRoomList {
+    id: number;
     created_at: string;
     updated_at: string;
     rooms: number;

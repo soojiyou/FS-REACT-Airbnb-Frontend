@@ -30,7 +30,7 @@ export const logOut = () => instance
     .then((response) => response.data);
 
 export const githubLogIn = (code: string) => instance
-    .post(`/users/github`, { code }, {
+    .post(`users/github`, { code }, {
         headers: {
             "X-CSRFToken": Cookie.get("csrftoken") || "",
         },
@@ -38,7 +38,7 @@ export const githubLogIn = (code: string) => instance
     .then((response) => response.status);
 
 export const kakaoLogIn = (code: string) => instance
-    .post(`/users/kakao`, { code }, {
+    .post(`users/kakao`, { code }, {
         headers: {
             "X-CSRFToken": Cookie.get("csrftoken") || "",
         },
@@ -62,7 +62,7 @@ export const usernameLogIn = ({
 }: IUsernameLoginVariables) =>
     instance
         .post(
-            `/users/log-in`,
+            `users/log-in`,
             { username, password },
             {
                 headers: {
@@ -110,3 +110,31 @@ export const getAmenities = () =>
 export const getCategories = () =>
     instance.get(`categories/room-category`).then((response) => response.data);
 
+export interface IUploadRoomVariables {
+    name: string;
+    country: string;
+    city: string;
+    price: number;
+    rooms: number;
+    toilets: number;
+    description: string;
+    address: string;
+    pet_friendly: boolean;
+    kind: string;
+    amenities: number[];
+    category: number;
+}
+
+
+export const uploadRoom = (roomvariables: IUploadRoomVariables) =>
+    instance
+        .post(
+            `rooms/`,
+            roomvariables,
+            {
+                headers: {
+                    "X-CSRFToken": Cookie.get("csrftoken") || "",
+                },
+            }
+        )
+        .then((response) => response.data);
