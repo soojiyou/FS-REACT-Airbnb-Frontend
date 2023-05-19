@@ -23,11 +23,11 @@ const router = createBrowserRouter([
                 element: <UploadRoom />,
             },
             {
-                path: "rooms/:room_id",
+                path: "rooms/:roomID",
                 element: <RoomDetail />,
             },
             {
-                path: "rooms/:room_id/photos",
+                path: "rooms/:roomID/photos",
                 element: <UploadPhotos />,
             },
             {
