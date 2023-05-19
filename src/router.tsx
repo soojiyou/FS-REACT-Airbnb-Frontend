@@ -6,6 +6,7 @@ import RoomDetail from "./routes/RoomDetail";
 import GithubConfirm from "./routes/GithubConfirm";
 import KakaoConfirm from "./routes/KakaoConfirm";
 import UploadRoom from "./routes/UploadRoom";
+import UploadPhotos from "./routes/UploadPhotos";
 
 const router = createBrowserRouter([
     {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
             {
                 path: "rooms/:room_id",
                 element: <RoomDetail />,
+            },
+            {
+                path: "rooms/:room_id/photos",
+                element: <UploadPhotos />,
             },
             {
                 path: "social",

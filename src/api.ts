@@ -138,3 +138,17 @@ export const uploadRoom = (roomvariables: IUploadRoomVariables) =>
             }
         )
         .then((response) => response.data);
+
+
+export const getUploadURL = () =>
+    instance
+        .post(
+            `medias/photos/get-upload-url`,
+            null,
+            {
+                headers: {
+                    "X-CSRFToken": Cookie.get("csrftoken") || "",
+                },
+            }
+        )
+        .then((response) => response.data);

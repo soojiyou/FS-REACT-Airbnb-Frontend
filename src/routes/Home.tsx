@@ -6,27 +6,8 @@ import { getRooms } from "../api";
 import RoomSkeleton from "../components/RoomSkeleton";
 import { IRoomList } from "../types";
 
-interface IPhoto {
-    pk: string;
-    file: string;
-    description: string;
-}
-
-
-interface IRoom {
-    pk: number;
-    name: string;
-    country: string;
-    city: string;
-    price: number;
-    rating: number;
-    is_owner: boolean;
-    photos: IPhoto[];
-}
-
-
 export default function Home() {
-    const { isLoading, data } = useQuery<IRoom[]>(["rooms"], getRooms)
+    const { isLoading, data } = useQuery<IRoomList[]>(["rooms"], getRooms)
     return (
         <Grid mt={10}
             px={{
@@ -69,6 +50,7 @@ export default function Home() {
                     city={room.city}
                     country={room.country}
                     price={room.price}
+                    isOwner={room.is_owner}
                 />
             ))}
             {/* <Box>
