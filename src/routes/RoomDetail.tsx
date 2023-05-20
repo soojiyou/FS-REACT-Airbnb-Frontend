@@ -12,9 +12,7 @@ import { Helmet } from "react-helmet";
 export default function RoomDetail() {
     const { roomID } = useParams();
     const { isLoading, data } = useQuery([`rooms`, roomID], getRoom);
-    // console.log(data);
     const { data: reviewsData, isLoading: isReviewsLoading } = useQuery<IReview[]>([`rooms`, roomID, `reviews`], getRoomReviews)
-    //console.log(reviewsData);
     const [dates, setDates] = useState<Date[]>();
     //useQuery 사용할떄 state를 query key 으로 사용하면 state가 변할때마다 자동으로 useQuery 다시 실행
     const { data: checkBookingData, isLoading: isCheckingBooking } = useQuery(["check", roomID, dates], checkBooking,
@@ -22,8 +20,8 @@ export default function RoomDetail() {
             cacheTime: 0,
             enabled: dates !== undefined,
         });
-    console.log("data", data, data.name);
-    console.log("reviewdata", reviewsData);
+    // console.log("data", data, data.name);
+    // console.log("reviewdata", reviewsData);
     return <Box mt={10}
         px={{
             base: 10,
