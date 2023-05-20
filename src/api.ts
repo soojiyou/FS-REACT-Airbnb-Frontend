@@ -4,7 +4,7 @@ import { QueryFunctionContext } from "@tanstack/react-query";
 import { formatDate } from "./lib/utils";
 
 const instance = axios.create({
-    baseURL: "http://localhost:8000/api/v1/",
+    baseURL: process.env.NODE_ENV === "development" ? "http://localhost:8000/api/v1/" : "https://mysfakebnbite.onrender.com/api/v1/",
     withCredentials: true,
 });
 
