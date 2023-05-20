@@ -7,34 +7,31 @@ import 'react-calendar/dist/Calendar.css';
 import { FaStar } from "react-icons/fa";
 import { IReview } from "../types";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 
 export default function RoomDetail() {
     const { roomID } = useParams();
     const { isLoading, data } = useQuery([`rooms`, roomID], getRoom);
-    console.log(data);
+    // console.log(data);
     const { data: reviewsData, isLoading: isReviewsLoading } = useQuery<IReview[]>([`rooms`, roomID, `reviews`], getRoomReviews)
-    console.log(reviewsData);
+    //console.log(reviewsData);
     const [dates, setDates] = useState<Date[]>();
+    //useQuery 사용할떄 state를 query key 으로 사용하면 state가 변할때마다 자동으로 useQuery 다시 실행
     const { data: checkBookingData, isLoading: isCheckingBooking } = useQuery(["check", roomID, dates], checkBooking,
         {
             cacheTime: 0,
             enabled: dates !== undefined,
         });
-    // useEffect(() => {
-    //     if (dates) {
-    //         const [firstDate, secondDate] = dates;
-    //         const [checkIn] = firstDate.toJSON().split("T");
-    //         const [checkOut] = secondDate.toJSON().split("T");
-    //         console.log(checkIn, checkOut);
-    //     }
-    //     console.log(dates);
-    // }, [dates]);
-
+    console.log("data", data, data.name);
+    console.log("reviewdata", reviewsData);
     return <Box mt={10}
         px={{
             base: 10,
             lg: 40,
         }}>
+        <Helmet>
+            <title>{data ? data.name : "Loading..."}</title>
+        </Helmet>
         <Skeleton height={"43px"} width={"40%"} isLoaded={!isLoading}>
             <Heading>{data?.name}</Heading>
         </Skeleton>
@@ -115,6 +112,7 @@ export default function RoomDetail() {
             </Box>
             <Box pt={10}>
                 <Calendar
+                    goToRangeStartOnSelect
                     onChange={setDates}
                     prev2Label={null}
                     next2Label={null}
@@ -125,7 +123,7 @@ export default function RoomDetail() {
                 />
                 <Button
                     disabled={!checkBookingData?.ok}
-                    isLoading={isCheckingBooking}
+                    isLoading={isCheckingBooking && dates !== undefined}
                     my={5}
                     w="100%"
                     colorScheme={"red"}
