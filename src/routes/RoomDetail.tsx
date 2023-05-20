@@ -111,7 +111,13 @@ export default function RoomDetail() {
             <Box pt={10}>
                 <Calendar
                     goToRangeStartOnSelect
-                    onChange={setDates}
+                    onChange={(value, event) => {
+                        if (Array.isArray(value) && value.every(v => v instanceof Date)) {
+                            setDates(value as Date[]);
+                        } else {
+                            setDates(undefined);
+                        }
+                    }}
                     prev2Label={null}
                     next2Label={null}
                     minDetail="month"
