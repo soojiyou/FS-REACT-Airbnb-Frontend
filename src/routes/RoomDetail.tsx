@@ -71,7 +71,10 @@ export default function RoomDetail() {
             rounded="xl"
             overflow={"hidden"}
             gap={2}
-            height="60vh"
+            h={{
+                base: "40vh",
+                lg: "60vh",
+            }}
             templateRows={"1fr 1fr"}
             templateColumns={"repeat(4, 1fr)"}
         >
@@ -100,7 +103,7 @@ export default function RoomDetail() {
                 <HStack mt={10} w={"40%"} justifyContent={"space-between"}>
                     <VStack alignItems={"flex-start"}>
                         <Skeleton isLoaded={!isLoading} height={"30px"}>
-                            <Heading fontSize={"2xl"}>House hosted by {data?.owner.name} </Heading>
+                            <Heading fontSize={"lg"}>House hosted by {data?.owner.name} </Heading>
                         </Skeleton>
                         <Skeleton isLoaded={!isLoading} height={"30px"}>
                             <HStack justifyContent={"flex-start"} w="100%">
