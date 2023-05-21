@@ -1,5 +1,8 @@
 # Airbnb Clone - Full Stack Development Project
 Developed a comprehensive clone of Airbnb using a combination of modern web technologies including Python, Django, Django REST Framework, Strawberry GraphQL, and ReactJS.
+## Deploy Website on domain:
+Frontend: https://fakebnbdomaintest.xyz/
+Backend: https://backend.fakebnbdomaintest.xyz/admin/
 ## Backend Development:
 Constructed the application backend using Python, Django, and Django REST Framework, adhering to REST principles for API design.
 Implemented GraphQL API using Strawberry for certain features, demonstrating versatility in API design approaches.
