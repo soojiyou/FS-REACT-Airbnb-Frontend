@@ -248,7 +248,6 @@ export const checkBooking = ({
 
 export interface IReserveBookingVariables {
     pk: string;
-    dates: Date[];
     check_in: string;
     check_out: string;
     guests: number;
