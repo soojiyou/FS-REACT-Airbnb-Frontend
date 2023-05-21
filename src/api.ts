@@ -232,7 +232,7 @@ export const checkBooking = ({
 };
 
 
-export interface IReserveBooking {
+export interface IReserveBookingVariables {
     pk: string;
     dates: Date[];
     check_in: string;
@@ -241,7 +241,7 @@ export interface IReserveBooking {
 }
 
 
-export const reserveBooking = (variables: IReserveBooking) =>
+export const reserveBooking = (variables: IReserveBookingVariables) =>
     instance
         .post(`rooms/${variables.pk}/bookings`, variables, {
             headers: {
@@ -250,3 +250,44 @@ export const reserveBooking = (variables: IReserveBooking) =>
         })
         .then((response) => response.status);
 
+
+export type GetBookingQueryKey = [
+    string,
+    string?,
+    {
+        year: number;
+        month: number;
+    }?
+];
+
+export interface ISearchDate {
+    year: number;
+    month: number;
+}
+
+//api for owner
+export const getReservation = ({
+    queryKey,
+}: QueryFunctionContext<GetBookingQueryKey>) => {
+    const [_, roomID, formDate] = queryKey;
+    const year = formDate?.year;
+    const month = formDate?.month;
+    return instance
+        .get(`rooms/${roomID}/bookings?year=${year}&month=${month}`)
+        .then((response) => response.data);
+};
+
+
+export const getMyBookings = () =>
+    instance.get("bookings/me").then((response) => response.data);
+
+
+
+export const cancelBooking = (bookingPk: number) =>
+    instance
+        .post(`bookings/me/${bookingPk}/cancel`, null, {
+            headers: {
+                "X-CSRFToken": Cookie.get("csrftoken") || "",
+            },
+        })
+        .then((response) => response.status);

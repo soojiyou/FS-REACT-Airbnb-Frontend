@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { IReserveBooking, checkBooking, getRoom, getRoomReviews, reserveBooking } from "../api";
+import { IReserveBookingVariables, checkBooking, getRoom, getRoomReviews, reserveBooking } from "../api";
 import { Box, Grid, GridItem, HStack, Heading, Image, Skeleton, Text, VStack, Avatar, Container, Button, useToast, InputLeftAddon, InputGroup, Input, InputRightAddon } from "@chakra-ui/react";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import { formatDate } from "../lib/utils";
 
 export default function RoomDetail() {
-    const { register, handleSubmit, watch } = useForm<IReserveBooking>();
+    const { register, handleSubmit, watch } = useForm<IReserveBookingVariables>();
     const toast = useToast();
     const navigate = useNavigate();
     const { roomID } = useParams();
@@ -38,7 +38,7 @@ export default function RoomDetail() {
         },
     });
     const guests = watch("guests", 2);
-    const onSubmit = (data: IReserveBooking) => {
+    const onSubmit = (data: IReserveBookingVariables) => {
         if (dates && roomID) {
             data["pk"] = roomID;
             data["check_in"] = formatDate(dates[0]);

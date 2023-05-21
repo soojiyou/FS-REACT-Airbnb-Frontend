@@ -8,6 +8,7 @@ import KakaoConfirm from "./routes/KakaoConfirm";
 import UploadRoom from "./routes/UploadRoom";
 import UploadPhotos from "./routes/UploadPhotos";
 import EditRoom from "./routes/EditRoom";
+import MyHostRoomReservations from "./routes/MyHostRoomReservations";
 
 const router = createBrowserRouter([
     {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
                     {
                         path: "photos",
                         element: <UploadPhotos />,
+                    },
+                    {
+                        path: "my-hosting-reservation",
+                        element: <MyHostRoomReservations />
                     },
                 ],
             },
