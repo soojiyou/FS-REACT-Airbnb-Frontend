@@ -140,6 +140,32 @@ export const uploadRoom = (roomvariables: IUploadRoomVariables) =>
         )
         .then((response) => response.data);
 
+export interface IEditRoomVariables {
+    name: string;
+    country: string;
+    city: string;
+    price: number;
+    rooms: number;
+    toilets: number;
+    description: string;
+    address: string;
+    pet_friendly: boolean;
+    kind: string;
+    amenities: number[];
+    category: number;
+    roomID: string;
+}
+
+export const editRoom = (variables: IEditRoomVariables) =>
+    instance
+        .put(`rooms/${variables.roomID}`, variables, {
+            headers: {
+                "X-CSRFToken": Cookie.get("csrftoken") || "",
+            },
+        })
+        .then((response) => response.data);
+
+
 
 export const getUploadURL = () =>
     instance
