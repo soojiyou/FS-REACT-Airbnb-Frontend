@@ -56,7 +56,7 @@ export default function Header() {
             }}
             borderBottomWidth={1}>
             <Box color={logo}>
-                <FaAirbnb size={48} />
+                <Link to="/"><FaAirbnb size={48} /></Link>
             </Box>
             <HStack spacing={2}>
                 <IconButton onClick={toggleColorMode} variant={'ghost'} aria-label='Toggle dark mode' icon={<ModeIcon />} />
