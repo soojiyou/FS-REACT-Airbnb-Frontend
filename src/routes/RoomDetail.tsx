@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { checkBooking, getRoom, getRoomReviews } from "../api";
 import { Box, Grid, GridItem, HStack, Heading, Image, Skeleton, Text, VStack, Avatar, Container, Button } from "@chakra-ui/react";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import { FaStar } from "react-icons/fa";
+import { FaPencilAlt, FaStar } from "react-icons/fa";
 import { IReview } from "../types";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
@@ -30,9 +30,18 @@ export default function RoomDetail() {
         <Helmet>
             <title>{data ? data.name : "Loading..."}</title>
         </Helmet>
-        <Skeleton height={"43px"} width={"40%"} isLoaded={!isLoading}>
-            <Heading>{data?.name}</Heading>
-        </Skeleton>
+        <HStack justifyContent={"space-between"}>
+            <Skeleton height={"43px"} width={"40%"} isLoaded={!isLoading}>
+                <Heading>{data?.name}</Heading>
+            </Skeleton>
+            {data?.is_owner ? (
+                <Link to={`/rooms/${roomID}/edit`}>
+                    <Button colorScheme={"gray"}>
+                        <FaPencilAlt fontSize={"15"} />
+                    </Button>
+                </Link>
+            ) : null}
+        </HStack>
         <Grid
             mt={8}
             rounded="xl"
