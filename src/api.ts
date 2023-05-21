@@ -3,6 +3,13 @@ import axios from "axios";
 import { QueryFunctionContext } from "@tanstack/react-query";
 import { formatDate } from "./lib/utils";
 
+const token = localStorage.getItem("token");
+
+if (token) {
+    axios.defaults.headers.common["Authorization"] = `Token ${token}`;
+}
+
+
 const instance = axios.create({
     baseURL: process.env.NODE_ENV === "development" ? "http://localhost:8000/api/v1/" : "https://mysfakebnbite.onrender.com/api/v1/",
     withCredentials: true,
@@ -68,10 +75,17 @@ export const usernameLogIn = ({
             {
                 headers: {
                     "X-CSRFToken": Cookie.get("csrftoken") || "",
+                    Authorization: null,
                 },
             }
         )
-        .then((response) => response.data);
+        .then((response) => {
+            localStorage.setItem("token", response.data.token);
+            axios.defaults.headers.common[
+                "Authorization"
+            ] = `Token ${response.data.token}`;
+            return response.data;
+        });
 
 
 export interface ISignUpVariables {
