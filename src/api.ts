@@ -232,3 +232,21 @@ export const checkBooking = ({
 };
 
 
+export interface IReserveBooking {
+    pk: string;
+    dates: Date[];
+    check_in: string;
+    check_out: string;
+    guests: number;
+}
+
+
+export const reserveBooking = (variables: IReserveBooking) =>
+    instance
+        .post(`rooms/${variables.pk}/bookings`, variables, {
+            headers: {
+                "X-CSRFToken": Cookie.get("csrftoken") || "",
+            },
+        })
+        .then((response) => response.status);
+

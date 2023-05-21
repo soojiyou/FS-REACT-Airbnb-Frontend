@@ -1,15 +1,20 @@
-import { useQuery } from "@tanstack/react-query";
-import { Link, useParams } from "react-router-dom";
-import { checkBooking, getRoom, getRoomReviews } from "../api";
-import { Box, Grid, GridItem, HStack, Heading, Image, Skeleton, Text, VStack, Avatar, Container, Button } from "@chakra-ui/react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { IReserveBooking, checkBooking, getRoom, getRoomReviews, reserveBooking } from "../api";
+import { Box, Grid, GridItem, HStack, Heading, Image, Skeleton, Text, VStack, Avatar, Container, Button, useToast, InputLeftAddon, InputGroup, Input, InputRightAddon } from "@chakra-ui/react";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import { FaPencilAlt, FaStar } from "react-icons/fa";
+import { FaPencilAlt, FaStar, FaUserFriends } from "react-icons/fa";
 import { IReview } from "../types";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
+import { useForm } from "react-hook-form";
+import { formatDate } from "../lib/utils";
 
 export default function RoomDetail() {
+    const { register, handleSubmit, watch } = useForm<IReserveBooking>();
+    const toast = useToast();
+    const navigate = useNavigate();
     const { roomID } = useParams();
     const { isLoading, data } = useQuery([`rooms`, roomID], getRoom);
     const { data: reviewsData, isLoading: isReviewsLoading } = useQuery<IReview[]>([`rooms`, roomID, `reviews`], getRoomReviews)
@@ -22,6 +27,25 @@ export default function RoomDetail() {
         });
     // console.log("data", data, data.name);
     // console.log("reviewdata", reviewsData);
+    const mutation = useMutation(reserveBooking, {
+        onSuccess: () => {
+            toast({
+                status: "success",
+                title: "Successfully reserved!",
+                isClosable: true,
+            });
+            navigate("/");
+        },
+    });
+    const guests = watch("guests", 2);
+    const onSubmit = (data: IReserveBooking) => {
+        if (dates && roomID) {
+            data["pk"] = roomID;
+            data["check_in"] = formatDate(dates[0]);
+            data["check_out"] = formatDate(dates[1]);
+            mutation.mutate(data);
+        }
+    };
     return <Box mt={10}
         px={{
             base: 10,
@@ -117,7 +141,7 @@ export default function RoomDetail() {
                     </Container>
                 </Box>
             </Box>
-            <Box pt={10}>
+            <Box as="form" onSubmit={handleSubmit(onSubmit)} pt={10}>
                 <Calendar
                     goToRangeStartOnSelect
                     onChange={(value, event) => {
@@ -134,12 +158,26 @@ export default function RoomDetail() {
                     maxDate={new Date(Date.now() + 60 * 60 * 24 * 7 * 4 * 6 * 1000)}
                     selectRange
                 />
+                <InputGroup mt={3}>
+                    <InputLeftAddon children={<FaUserFriends />} />
+                    <Input
+                        {...register("guests", { required: true })}
+                        required
+                        type="number"
+                        min={1}
+                        defaultValue={2}
+
+                    />
+                    <InputRightAddon>{guests > 1 ? 'guests' : 'guest'}</InputRightAddon>
+                </InputGroup>
+
                 <Button
                     disabled={!checkBookingData?.ok}
                     isLoading={isCheckingBooking && dates !== undefined}
                     my={5}
                     w="100%"
                     colorScheme={"red"}
+                    type="submit"
                 >
                     Make booking
                 </Button>
