@@ -11,7 +11,7 @@ if (token) {
 
 
 const instance = axios.create({
-    baseURL: process.env.NODE_ENV === "development" ? "http://localhost:8000/api/v1/" : "https://mysfakebnbite.onrender.com/api/v1/",
+    baseURL: process.env.NODE_ENV === "development" ? "http://localhost:8000/api/v1/" : "https://mysfakebnbite-tl1o.onrender.com/api/v1/",
     withCredentials: true,
 });
 
